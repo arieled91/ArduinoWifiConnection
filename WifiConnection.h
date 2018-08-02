@@ -31,14 +31,13 @@ WifiConnection::WifiConnection(int rx, int tx, String ssid, String password)
         this->status = 0;
 }
 
-// Find the number of beats the button has been down for. Function can compute max. 8 sec down before rolling over.
 int WifiConnection::connect()
 {
   SoftwareSerial newWifiSerial = SoftwareSerial(rx,tx);
   Serial.println("Starting WIFI Connection");
 
   Serial.begin(115200);
-  newWifiSerial.begin(115200); //115200
+  newWifiSerial.begin(115200);
   newWifiSerial.println("AT");
   delay(2000);
   if (newWifiSerial.find("OK"))
@@ -46,19 +45,19 @@ int WifiConnection::connect()
   else
     Serial.println("Error in ESP8266");
 
-  //-----Configuración de red-------//
+  //-----Network configuration-------//
 
-  //ESP8266 en modo estación (nos conectaremos a una red existente)
+  //ESP8266 in station mode
   newWifiSerial.println("AT+CWMODE=3");
   if (newWifiSerial.find("OK"))
     Serial.println("ESP8266 in Station and Access-Point mode");
 
-  //Nos conectamos a una red wifi
+  //Wifi authentication
   newWifiSerial.print("AT+CWJAP=");
   newWifiSerial.println("\""+ssid+"\",\""+password+"\"");
 
   Serial.println("Connecting to '"+ssid+"'...");
-  newWifiSerial.setTimeout(10000); //Aumentar si demora la conexion
+  newWifiSerial.setTimeout(10000); //Increase if connection is slow
   newWifiSerial.println("AT+CIPMUX=0");
   if (newWifiSerial.find("OK")){
     wifiSerial = newWifiSerial;
@@ -70,7 +69,7 @@ int WifiConnection::connect()
 }
   return status;
 
-  //------fin de configuracion WiFi-------------------
+  //------Ending of wifi configuration-------------------
   newWifiSerial.print("AT+CIPSTART=\"TCP\",\"");
   newWifiSerial.print(server);
   newWifiSerial.println("\",80");
