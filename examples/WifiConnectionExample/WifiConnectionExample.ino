@@ -13,5 +13,6 @@ void setup() {
 
 void loop(){
   if(wifi.getStatus()==0) wifi.connect();
+  //do stuff
   delay(2000);
 }
